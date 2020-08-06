@@ -3,7 +3,7 @@ This is a small tic-tac-toe game played in command line. Players choose position
 '''
 import os
 
-# Global avraiable board is a 0-9 list, which eventually get replaced with x/o
+# Global variable board is a 0-9 list, which eventually get replaced with x/o
 board = [i for i in range(9)]
 
 
