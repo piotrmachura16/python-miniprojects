@@ -44,8 +44,24 @@ class CollatzApp(QtWidgets.QMainWindow):
         f.setPointSize(14)
         self.inputBox.setFont(f)
 
+        # Create 'Steps' label
+        self.stepsLabel = QtWidgets.QLabel(self)
+        self.stepsLabel.setText('Steps')
+        self.stepsLabel.setAlignment(QtCore.Qt.AlignCenter)
+        f = self.stepsLabel.font()
+        f.setPointSize(10)
+        self.stepsLabel.setFont(f)
+
         # Create textarea for iterations display
-        self.stepsDisplay = ROTextArea(self)
+        self.stepsDisplay = QtWidgets.QPlainTextEdit(self)
+        f = self.stepsDisplay.font()
+        f.setPointSize(12)
+        self.stepsDisplay.setFont(f)
+        # Set tab width to 4 spaces
+        self.stepsDisplay.setTabStopDistance(
+            QtGui.QFontMetricsF(f).horizontalAdvance(' ') * 4)
+        self.stepsDisplay.setLineWrapMode(QtWidgets.QPlainTextEdit.NoWrap)
+        self.stepsDisplay.setReadOnly(True)
 
         # Create clear button
         self.clearButton = QtWidgets.QPushButton('Clear', self)
@@ -61,6 +77,7 @@ class CollatzApp(QtWidgets.QMainWindow):
         hBoxTop.addWidget(self.startButton)
         vBox = QtWidgets.QVBoxLayout()
         vBox.addLayout(hBoxTop)
+        vBox.addWidget(self.stepsLabel)
         vBox.addWidget(self.stepsDisplay)
         hBoxBottom = QtWidgets.QHBoxLayout()
         hBoxBottom.addStretch()
