@@ -3,7 +3,6 @@ import os
 import webbrowser
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from validator import IntValidator
-from display import ROTextArea
 from dialog import BrowserDialog
 
 
@@ -15,16 +14,13 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.title = ' Collatz'
         self.width = 550
         self.height = 700
-        # Center the window
-        centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
-        self.left = int(centerPoint.x()-self.width/2)
-        self.top = int(centerPoint.y() - self.height / 2)
         self.initUI()
 
     def initUI(self):
         """Initialize the app UI. Only gets called once."""
+
         self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        self.setFixedSize(self.width, self.height)
         self.setWindowIcon(QtGui.QIcon(
             os.path.dirname(__file__) + '/icon.svg'))
 
@@ -96,6 +92,7 @@ class CollatzApp(QtWidgets.QMainWindow):
 
         Raises an `Exception` and terminates if the `number` is 1.
         """
+
         self.stepsDisplay.insertPlainText(str(number))
         if number == 1:
             self.stepsDisplay.insertPlainText('\n')
@@ -112,6 +109,7 @@ class CollatzApp(QtWidgets.QMainWindow):
     @ QtCore.pyqtSlot()
     def on_click_start(self):
         """Clear the `stepsDisplay` and start the Collatz sequence."""
+
         self.stepsDisplay.clear()
         try:
             textboxValue = int(self.inputBox.text())
@@ -129,6 +127,7 @@ class CollatzApp(QtWidgets.QMainWindow):
     @ QtCore.pyqtSlot()
     def on_click_clear(self):
         """Clear the `inputBox` and `stepsDisplay`."""
+
         self.inputBox.clear()
         self.stepsDisplay.clear()
         self.inputBox.setFocus()
@@ -136,7 +135,8 @@ class CollatzApp(QtWidgets.QMainWindow):
     @ QtCore.pyqtSlot()
     def on_click_info(self):
         """Open a dialog window to acces the relevant Wikipedia article."""
-        if BrowserDialog(self).exec_():
+
+        if BrowserDialog(self).exec():
             webbrowser.open('https://en.wikipedia.org/wiki/Collatz_conjecture')
         else:
-            pass
+            self.inputBox.setFocus()
