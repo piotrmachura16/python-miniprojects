@@ -1,6 +1,3 @@
-'''
-This is a small tic-tac-toe game played in command line. Players choose positions by inputing numbers from the board. Normal tic-tac-toe rules for winning/drawing apply.
-'''
 import os
 
 # Global variable board is a 0-9 list, which eventually get replaced with x/o
@@ -8,9 +5,8 @@ board = [i for i in range(9)]
 
 
 def print_board():
-    '''
-    Clear the terminal screen and print the board.
-    '''
+    """Clear the terminal screen and print the board."""
+
     global board
     # Clear the screen with cls (Windows) or clear (other systems)
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -23,9 +19,8 @@ def print_board():
 
 
 def input_position(player):
-    '''
-    Ask the player for position. Handle the input and exit if `input==q` .
-    '''
+    """Ask the `player` for position. Exit if `input==q`."""
+
     while True:
         try:
             pos_string = input(f'{player}: ')
@@ -42,9 +37,8 @@ def input_position(player):
 
 
 def check_win():
-    '''
-    Check if there is a winner (or draw) and end the game if there is.
-    '''
+    """Check if there is a winner (or draw) and end the game if there is."""
+
     global board
     h_index = 0
     v_index = 0

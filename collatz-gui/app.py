@@ -2,15 +2,13 @@ import sys
 import os
 import webbrowser
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
-from IntValidator import IntValidator
-from StepsDisplay import StepsDisplay
-from BrowserDialog import BrowserDialog
+from validator import IntValidator
+from display import ROTextArea
+from dialog import BrowserDialog
 
 
 class CollatzApp(QtWidgets.QMainWindow):
-    '''
-    This is a Qt5 GUI for checking your favourite natural numbers against the Collatz conjecture.
-    '''
+    """Main app window."""
 
     def __init__(self):
         super().__init__()
@@ -24,9 +22,7 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.initUI()
 
     def initUI(self):
-        '''
-        Initialize the app UI. Only gets called once at the end of the constructor.
-        '''
+        """Initialize the app UI. Only gets called once."""
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.setWindowIcon(QtGui.QIcon(
@@ -37,19 +33,19 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.startButton.clicked.connect(self.on_click_start)
 
         # Create textbox for number input
-        self.inputbox = QtWidgets.QLineEdit(self)
-        self.inputbox.setValidator(IntValidator(bottom=1))
-        self.inputbox.resize(self.width - 40, 50)
+        self.inputBox = QtWidgets.QLineEdit(self)
+        self.inputBox.setValidator(IntValidator(bottom=1))
+        self.inputBox.resize(self.width - 40, 50)
         # Enter to press 'Start' button
-        self.inputbox.returnPressed.connect(self.startButton.click)
+        self.inputBox.returnPressed.connect(self.startButton.click)
         # Set textbox font
-        self.inputbox.font()
-        f = self.inputbox.font()
+        self.inputBox.font()
+        f = self.inputBox.font()
         f.setPointSize(14)
-        self.inputbox.setFont(f)
+        self.inputBox.setFont(f)
 
         # Create textarea for iterations display
-        self.steps = StepsDisplay(self)
+        self.stepsDisplay = ROTextArea(self)
 
         # Create clear button
         self.clearButton = QtWidgets.QPushButton('Clear', self)
@@ -60,82 +56,70 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.infoButton.clicked.connect(self.on_click_info)
 
         # Add widgets to window
-        hbox_top = QtWidgets.QHBoxLayout()
-        hbox_top.addWidget(self.inputbox)
-        hbox_top.addWidget(self.startButton)
-        vbox = QtWidgets.QVBoxLayout()
-        vbox.addLayout(hbox_top)
-        vbox.addWidget(self.steps)
-        hbox_bottom = QtWidgets.QHBoxLayout()
-        hbox_bottom.addStretch()
-        hbox_bottom.addWidget(self.clearButton)
-        hbox_bottom.addWidget(self.infoButton)
-        vbox.addLayout(hbox_bottom)
+        hBoxTop = QtWidgets.QHBoxLayout()
+        hBoxTop.addWidget(self.inputBox)
+        hBoxTop.addWidget(self.startButton)
+        vBox = QtWidgets.QVBoxLayout()
+        vBox.addLayout(hBoxTop)
+        vBox.addWidget(self.stepsDisplay)
+        hBoxBottom = QtWidgets.QHBoxLayout()
+        hBoxBottom.addStretch()
+        hBoxBottom.addWidget(self.clearButton)
+        hBoxBottom.addWidget(self.infoButton)
+        vBox.addLayout(hBoxBottom)
         # Central widget
         central = QtWidgets.QWidget(self)
-        central.setLayout(vbox)
+        central.setLayout(vBox)
         self.setCentralWidget(central)
         self.show()
+        self.inputBox.setFocus()
 
-    def check(self, n):
-        '''
-        Perform a recursive check with the Collatz sequence as described here: https://en.wikipedia.org/wiki/Collatz_conjecture .
+    def sequence(self, number):
+        """Perform a recursive check with the Collatz sequence and print each step to `stepsDisplay`.
 
-        Raises an exception and terminates when the sequence reaches 1.
-        '''
-        self.steps.insertPlainText(str(n))
-        if n == 1:
-            self.steps.insertPlainText('\n')
+        Raises an `Exception` and terminates if the `number` is 1.
+        """
+        self.stepsDisplay.insertPlainText(str(number))
+        if number == 1:
+            self.stepsDisplay.insertPlainText('\n')
             raise Exception()
         else:
             self.counter += 1
-            if n % 2 == 0:
-                self.steps.insertPlainText('\t| /2\n')
-                self.check(int(n / 2))
+            if number % 2 == 0:
+                self.stepsDisplay.insertPlainText('\t| /2\n')
+                self.sequence(int(number / 2))
             else:
-                self.steps.insertPlainText('\t| *3 + 1\n')
-                self.check(int(3 * n + 1))
+                self.stepsDisplay.insertPlainText('\t| *3 + 1\n')
+                self.sequence(int(3 * number + 1))
 
     @ QtCore.pyqtSlot()
     def on_click_start(self):
-        '''
-        Starts the Collatz sequence calculations.
-        '''
-        self.steps.clear()
+        """Clear the `stepsDisplay` and start the Collatz sequence."""
+        self.stepsDisplay.clear()
         try:
-            textboxValue = int(self.inputbox.text())
+            textboxValue = int(self.inputBox.text())
         except Exception:
             # Empty input - ignore
             return
         try:
             self.counter = 0
-            self.check(textboxValue)
+            self.sequence(textboxValue)
         except Exception:
-            self.steps.insertPlainText(
+            self.stepsDisplay.insertPlainText(
                 f'Terminated after {self.counter} iterations.')
-            self.steps.moveCursor(QtGui.QTextCursor.End)
+            self.stepsDisplay.moveCursor(QtGui.QTextCursor.End)
 
     @ QtCore.pyqtSlot()
     def on_click_clear(self):
-        '''
-        Clears the input box and steps display.
-        '''
-        self.inputbox.clear()
-        self.steps.clear()
-        self.inputbox.setFocus()
+        """Clear the `inputBox` and `stepsDisplay`."""
+        self.inputBox.clear()
+        self.stepsDisplay.clear()
+        self.inputBox.setFocus()
 
     @ QtCore.pyqtSlot()
     def on_click_info(self):
-        '''
-        Opens a dialog window and the Collatz conjecture Wikipedia article if the user chooses so.
-        '''
+        """Open a dialog window to acces the relevant Wikipedia article."""
         if BrowserDialog(self).exec_():
             webbrowser.open('https://en.wikipedia.org/wiki/Collatz_conjecture')
         else:
             pass
-
-
-if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    ex = CollatzApp()
-    sys.exit(app.exec_())

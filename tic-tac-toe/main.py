@@ -1,6 +1,3 @@
-'''
-The proper game loop. Starting player is chosen randomly.
-'''
 from tictactoe import print_board, input_position, check_win
 import random
 

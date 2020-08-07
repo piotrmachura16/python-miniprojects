@@ -2,14 +2,14 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class StepsDisplay(QtWidgets.QPlainTextEdit):
-    '''
-    A read-only QPlainTextEdit with some additional tweaks.
-    '''
+class ROTextArea(QtWidgets.QPlainTextEdit):
+    """A read-only QPlainTextEdit with some additional tweaks."""
+    # TODO: Replace this with just a nice label and a normal QPlainTextEditor
 
     def __init__(self, parent):
-        super(StepsDisplay, self).__init__(parent)
-        # Set font size
+        super(ROTextArea, self).__init__(parent)
+
+        # Set font
         f = self.font()
         f.setPointSize(12)
         self.setFont(f)
@@ -21,8 +21,6 @@ class StepsDisplay(QtWidgets.QPlainTextEdit):
         self.insertPlainText('Steps:\n')
 
     def clear(self):
-        '''
-        Clear the field and add the 'Steps:\n' prompt
-        '''
+        """Clear the field and add the static 'Steps:\n' prompt """
         super().clear()
         self.insertPlainText('Steps:\n')
