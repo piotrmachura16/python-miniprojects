@@ -1,4 +1,3 @@
-import sys
 import os
 import webbrowser
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
