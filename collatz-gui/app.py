@@ -12,8 +12,8 @@ class CollatzApp(QtWidgets.QMainWindow):
         super().__init__()
         self.setWindowTitle(' Collatz')
         self.setFixedSize(550, 700)
-        self.setWindowIcon(QtGui.QIcon(
-            os.path.dirname(__file__) + '/icon.svg'))
+        scriptDir = os.path.dirname(os.path.realpath(__file__))
+        self.setWindowIcon(QtGui.QIcon(scriptDir + os.path.sep + 'icon.svg'))
 
         # Create start button
         self.startButton = QtWidgets.QPushButton('Start', self)
@@ -22,7 +22,6 @@ class CollatzApp(QtWidgets.QMainWindow):
         # Create textbox for number input
         self.inputBox = QtWidgets.QLineEdit(self)
         self.inputBox.setValidator(IntValidator(bottom=1))
-        self.inputBox.resize(self.width - 40, 50)
         # Enter to press 'Start' button
         self.inputBox.returnPressed.connect(self.startButton.click)
         # Set textbox font
