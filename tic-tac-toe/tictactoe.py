@@ -1,7 +1,7 @@
 import os
 
 # Global variable board is a 0-9 list, which eventually get replaced with x/o
-board = [i for i in range(9)]
+board = list(range(9))
 
 
 def print_board():
@@ -45,31 +45,26 @@ def check_win():
     # Check horizontal lines with h_index and vertical lines with v_index
     for _ in range(0, 3):
         if board[h_index] == board[h_index + 1] == board[h_index + 2]:
-            print_board()
-            print(f"{board[h_index]} won!")
+            print(f'{board[h_index]} won!')
             exit()
         if board[v_index] == board[v_index + 3] == board[v_index + 6]:
-            print_board()
-            print(f"{board[h_index]} won!")
+            print(f'{board[v_index]} won!')
             exit()
         h_index += 3
         v_index += 1
 
     # Check diagonals
     if board[0] == board[4] == board[8]:
-        print_board()
-        print(f"{board[0]} won!")
+        print(f'{board[0]} won!')
         exit()
     if board[2] == board[4] == board[6]:
-        print_board()
-        print(f"{board[2]} won!")
+        print(f'{board[2]} won!')
         exit()
     # Check if the board is NOT full
     for cell in board:
-        if str(cell) in "012345678":
+        if str(cell) in '012345678':
             break
     # If full draw the game
     else:
-        print_board()
         print('Draw!')
         exit()

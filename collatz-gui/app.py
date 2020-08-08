@@ -1,6 +1,6 @@
 import os
 import webbrowser
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 from validator import IntValidator
 from dialog import BrowserDialog
 
@@ -10,22 +10,14 @@ class CollatzApp(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.title = ' Collatz'
-        self.width = 550
-        self.height = 700
-        self.initUI()
-
-    def initUI(self):
-        """Initialize the app UI. Only gets called once."""
-
-        self.setWindowTitle(self.title)
-        self.setFixedSize(self.width, self.height)
+        self.setWindowTitle(' Collatz')
+        self.setFixedSize(550, 700)
         self.setWindowIcon(QtGui.QIcon(
             os.path.dirname(__file__) + '/icon.svg'))
 
         # Create start button
         self.startButton = QtWidgets.QPushButton('Start', self)
-        self.startButton.clicked.connect(self.on_click_start)
+        self.startButton.clicked.connect(self._on_click_start)
 
         # Create textbox for number input
         self.inputBox = QtWidgets.QLineEdit(self)
@@ -60,11 +52,11 @@ class CollatzApp(QtWidgets.QMainWindow):
 
         # Create clear button
         self.clearButton = QtWidgets.QPushButton('Clear', self)
-        self.clearButton.clicked.connect(self.on_click_clear)
+        self.clearButton.clicked.connect(self._on_click_clear)
 
         # Create info button
         self.infoButton = QtWidgets.QPushButton('Info', self)
-        self.infoButton.clicked.connect(self.on_click_info)
+        self.infoButton.clicked.connect(self._on_click_info)
 
         # Add widgets to window
         hBoxTop = QtWidgets.QHBoxLayout()
@@ -86,10 +78,10 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.show()
         self.inputBox.setFocus()
 
-    def sequence(self, number):
+    def _sequence(self, number):
         """Perform a recursive check with the Collatz sequence and print each step to `stepsDisplay`.
 
-        Raises an `Exception` and terminates if the `number` is 1.
+        Raises `Exception` and terminates if the `number` is 1.
         """
 
         self.stepsDisplay.insertPlainText(str(number))
@@ -100,13 +92,13 @@ class CollatzApp(QtWidgets.QMainWindow):
             self.counter += 1
             if number % 2 == 0:
                 self.stepsDisplay.insertPlainText('\t| /2\n')
-                self.sequence(int(number / 2))
+                self._sequence(int(number / 2))
             else:
                 self.stepsDisplay.insertPlainText('\t| *3 + 1\n')
-                self.sequence(int(3 * number + 1))
+                self._sequence(int(3 * number + 1))
 
     @ QtCore.pyqtSlot()
-    def on_click_start(self):
+    def _on_click_start(self):
         """Clear the `stepsDisplay` and start the Collatz sequence."""
 
         self.stepsDisplay.clear()
@@ -117,14 +109,14 @@ class CollatzApp(QtWidgets.QMainWindow):
             return
         try:
             self.counter = 0
-            self.sequence(textboxValue)
+            self._sequence(textboxValue)
         except Exception:
             self.stepsDisplay.insertPlainText(
                 f'Terminated after {self.counter} iterations.')
             self.stepsDisplay.moveCursor(QtGui.QTextCursor.End)
 
     @ QtCore.pyqtSlot()
-    def on_click_clear(self):
+    def _on_click_clear(self):
         """Clear the `inputBox` and `stepsDisplay`."""
 
         self.inputBox.clear()
@@ -132,7 +124,7 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.inputBox.setFocus()
 
     @ QtCore.pyqtSlot()
-    def on_click_info(self):
+    def _on_click_info(self):
         """Open a dialog window to acces the relevant Wikipedia article."""
 
         if BrowserDialog(self).exec():
