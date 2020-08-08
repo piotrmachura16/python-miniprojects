@@ -1,9 +1,11 @@
+"""This module contains the custom dialog box."""
 import os
 from PyQt5 import QtGui, QtWidgets, QtCore
 
 
 class BrowserDialog(QtWidgets.QDialog):
-    """ This is a custom dialog box for opening the Collatz conjecture Wikipedia page in a web browser.
+    """ This is a custom dialog box for opening the Collatz
+    conjecture Wikipedia page in a web browser.
     """
 
     def __init__(self, *args, **kwargs):
@@ -14,10 +16,10 @@ class BrowserDialog(QtWidgets.QDialog):
             os.path.dirname(__file__) + '/icon.svg'))
 
         # Buttons
-        QBtn = QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-        self.buttonBox = QtWidgets.QDialogButtonBox(QBtn)
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
+        q_btn = QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        self.button_box = QtWidgets.QDialogButtonBox(q_btn)
+        self.button_box.accepted.connect(self.accept)
+        self.button_box.rejected.connect(self.reject)
 
         self.message = QtWidgets.QLabel(
             'This will open your browser.\nContinue?', self)
@@ -25,5 +27,5 @@ class BrowserDialog(QtWidgets.QDialog):
 
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.message)
-        self.layout.addWidget(self.buttonBox)
+        self.layout.addWidget(self.button_box)
         self.setLayout(self.layout)

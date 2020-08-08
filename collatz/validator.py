@@ -1,9 +1,11 @@
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+"""This module contains the arbitraryly big int validator."""
+from PyQt5 import QtGui
 
 
 class IntValidator(QtGui.QDoubleValidator):
-    """Normal QIntValidator is limited to 32-bit signed size. This version utilizes QDoubleValidator to allow for arbitraryly big integers, which are possible in Python.
+    """Normal QIntValidator is limited to 32-bit signed size.
+    This version utilizes QDoubleValidator to allow for arbitraryly big
+    integers, which are possible in Python.
     """
 
     def __init__(self, bottom=float('-inf'), top=float('inf')):
@@ -11,6 +13,7 @@ class IntValidator(QtGui.QDoubleValidator):
         self.setNotation(QtGui.QDoubleValidator.StandardNotation)
 
     def validate(self, text, pos):
+        """Validate which disalows the '.' symbol."""
         # Disallow '.' symbol since only ints are allowed
         if text.endswith('.'):
             return QtGui.QValidator.Invalid, text, pos
