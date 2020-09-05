@@ -2,6 +2,7 @@
 `Dealer` and `Human`.
 """
 from deck import Card, Deck
+from exception import BlackJackException
 
 
 class Player:
@@ -66,38 +67,36 @@ class Dealer(Player):
         self.hit(deck, 1)
 
     def hit_continuosly(self, deck: Deck, oponent: Player):
-        """Hit until you have more points than `oponent` or until you exceed 21
+        """Hit until you have more points than `oponent` or exceed 21.
         """
         while self.calculate_points() < 21:
             self.hit(deck, 1)
             points = self.calculate_points()
             oponent_points = oponent.calculate_points()
             if oponent_points < points <= 21:
-                print(f'The {self.name} wins!')
-                break
-        else:
-            print(f'The {oponent.name} wins!')
+                raise BlackJackException(f'The {self.name} wins!')
+        raise BlackJackException(f'The {oponent.name} wins!')
 
 
 class Human(Player):
     """The Human class. Hits 2 cards when created. Extends `Player` with `bet`
-    and `stand` methods
+    and `stand` methods.
     """
 
     def __init__(self, deck: Deck, balance: int):
         super().__init__()
-        self.name = 'HUMAN'
+        self.name = 'PLAYER'
         self.balance = balance
         self.hit(deck, 2)
 
     def bet(self, amount: int) -> int:
         """Bet `amount` on winning the current hand."""
         if self.balance - amount < 0:
-            print(f"Not enough money to bet ${amount}.")
+            print(f'Not enough money to bet ${amount}.')
         else:
             self.balance -= amount
-            print(f"Bet of ${amount} placed.")
-        print(f"Current balance: ${self.balance}")
+            print(f'Bet of ${amount} placed.')
+        print(f'Current balance: ${self.balance}')
 
     def stand(self):
         """Do nothing."""

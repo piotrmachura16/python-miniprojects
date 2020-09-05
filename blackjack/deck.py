@@ -44,14 +44,14 @@ class Deck:
     """
 
     def __init__(self):
-        self.cards = 4*[Card(symbol) for symbol, _ in Card.TYPES]
+        self.cards = 4*[Card(symbol) for symbol in Card.TYPES]
 
     def __len__(self) -> int:
         return len(self.cards)
 
     def __repr__(self) -> str:
         str_repr = 'Deck:\n'
-        for symbol, _ in Card.TYPES:
+        for symbol in Card.TYPES:
             counter = self.cards.count(Card(symbol))
             if counter != 0:
                 str_repr += f'[{symbol}]: {counter} '
