@@ -1,14 +1,21 @@
+"""This module contains the `Player` class and the derivatives:
+`Dealer` and `Human`.
+"""
 from deck import Card, Deck
 
 
 class Player:
+    """The parent `Player` class. Contains an extensive `__repr__` method and a
+    `hit` method.
+    """
+
     def __init__(self):
         self.hand = []
         self.balance = None
         self.name = ''
 
     def __repr__(self) -> str:
-        str_repr = self.name + '\n'
+        str_repr = f'-- {self.name} --\n'
         str_repr += 'Hand: '
         for symbol in Card.TYPES.keys():
             counter = self.hand.count(Card(symbol))
@@ -16,11 +23,7 @@ class Player:
                 str_repr += f'[{symbol}]: {counter} '
         str_repr += '\n'
 
-        points = 0
-        points_alt = 0
-        for card in self.hand:
-            points += card.value[0]
-            points_alt += card.value[1]
+        points, points_alt = self.calculate_points()
         if points == points_alt:
             str_repr += f'Points: {points} '
         else:
@@ -36,10 +39,19 @@ class Player:
     def __str__(self) -> str:
         return self.__repr__()
 
-    def hit(self, deck: Deck, n: int):
+    def calculate_points(self) -> int:
+        """Return current amount of points from cards in `self.hand`"""
+        points = 0
+        points_alt = 0
+        for card in self.hand:
+            points += card.value[0]
+            points_alt += card.value[1]
+        return points, points_alt
+
+    def hit(self, deck: Deck, hwo_many: int):
         """Pop `n` cards from `deck` and add them to `self.cards`"""
         try:
-            self.hand += [deck.pop() for _ in range(n)]
+            self.hand += [deck.pop() for _ in range(hwo_many)]
         except ValueError:
             # TODO: Handle error when the deck is empty
             pass
@@ -50,8 +62,21 @@ class Dealer(Player):
 
     def __init__(self, deck: Deck):
         super().__init__()
-        self.name = '-- DEALER --'
+        self.name = 'DEALER'
         self.hit(deck, 1)
+
+    def hit_continuosly(self, deck: Deck, oponent: Player):
+        """Hit until you have more points than `oponent` or until you exceed 21
+        """
+        while self.calculate_points() < 21:
+            self.hit(deck, 1)
+            points = self.calculate_points()
+            oponent_points = oponent.calculate_points()
+            if oponent_points < points <= 21:
+                print(f'The {self.name} wins!')
+                break
+        else:
+            print(f'The {oponent.name} wins!')
 
 
 class Human(Player):
@@ -61,7 +86,7 @@ class Human(Player):
 
     def __init__(self, deck: Deck, balance: int):
         super().__init__()
-        self.name = '-- HUMAN --'
+        self.name = 'HUMAN'
         self.balance = balance
         self.hit(deck, 2)
 
@@ -76,4 +101,3 @@ class Human(Player):
 
     def stand(self):
         """Do nothing."""
-        pass

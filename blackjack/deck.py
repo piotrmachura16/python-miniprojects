@@ -1,3 +1,5 @@
+"""This module contains the `Card` as well as `Deck` classes.
+"""
 from random import randrange
 
 
@@ -18,10 +20,7 @@ class Card:
         return self.__repr__()
 
     def __eq__(self, o: object) -> bool:
-        try:
-            return self.symbol == o.symbol
-        except Exception:
-            return False
+        return isinstance(o, Card) and self.symbol == o.symbol
 
     TYPES = {'2': (2, 2),
              '3': (3, 3),
@@ -45,14 +44,14 @@ class Deck:
     """
 
     def __init__(self):
-        self.cards = 4*[Card(symbol) for symbol in Card.TYPES.keys()]
+        self.cards = 4*[Card(symbol) for symbol, _ in Card.TYPES]
 
     def __len__(self) -> int:
         return len(self.cards)
 
     def __repr__(self) -> str:
         str_repr = 'Deck:\n'
-        for symbol in Card.TYPES.keys():
+        for symbol, _ in Card.TYPES:
             counter = self.cards.count(Card(symbol))
             if counter != 0:
                 str_repr += f'[{symbol}]: {counter} '
