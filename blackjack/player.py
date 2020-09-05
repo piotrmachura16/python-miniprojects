@@ -49,7 +49,7 @@ class Player:
         return points, points_alt
 
     def hit(self, deck: Deck, hwo_many: int):
-        """Pop `n` cards from `deck` and add them to `self.cards`"""
+        """Pop `n` cards from `deck` and add them to `self.hand`"""
         try:
             self.hand += [deck.pop() for _ in range(hwo_many)]
         except ValueError:
