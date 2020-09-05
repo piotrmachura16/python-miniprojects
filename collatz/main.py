@@ -1,4 +1,4 @@
-"""This is the __main__ module."""
+"""This is the `__main__` module."""
 import sys
 import os
 from PyQt5 import QtWidgets, QtGui

@@ -1,4 +1,4 @@
-"""This is the __main__ module."""
+"""This is the `__main__` module."""
 import random
 from game import print_board, input_position, check_win
 
