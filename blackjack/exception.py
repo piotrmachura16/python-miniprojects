@@ -1,11 +1,21 @@
 """This module contains the custom Exception used to manage game flow"""
-
+from player import Player
 
 class BlackJackException(Exception):
-    """The exception BlackJackException used to manage game flow. Contains a
-    field `message` with the message to be displayed.
-    """
+    """The base BlackJackException used to manage game flow."""
 
-    def __init__(self, message: str):
+
+class ExitException(BlackJackException):
+    """The ExitException used to exit the game."""
+
+class BustedException(BlackJackException):
+    """The BustedException used to signify busting."""
+
+class FoldException(BlackJackException):
+    """The FoldException used to signify folding."""
+
+class WinException(BlackJackException):
+    """The exception used to signify winning."""
+    def __init__(self, player: Player):
         super().__init__()
-        self.messsage = message
+        self.winning_player = player

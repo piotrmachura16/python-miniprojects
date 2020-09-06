@@ -2,7 +2,7 @@
 `Dealer` and `Human`.
 """
 from deck import Card, Deck
-from exception import BlackJackException
+from exception import BustedException, WinException
 
 
 class Player:
@@ -56,6 +56,8 @@ class Player:
         except ValueError:
             # TODO: Handle error when the deck is empty
             pass
+        if self.calculate_points() > 21:
+            raise BustedException
 
 
 class Dealer(Player):
@@ -74,8 +76,8 @@ class Dealer(Player):
             points = self.calculate_points()
             oponent_points = oponent.calculate_points()
             if oponent_points < points <= 21:
-                raise BlackJackException(f'The {self.name} wins!')
-        raise BlackJackException(f'The {oponent.name} wins!')
+                raise WinException(self)
+        raise WinException(oponent)
 
 
 class Human(Player):
