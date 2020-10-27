@@ -8,11 +8,10 @@ from dialog import BrowserDialog
 
 class CollatzApp(QtWidgets.QMainWindow):
     """Main app window."""
-
     def __init__(self):
         super().__init__()
         self.setWindowTitle(' Collatz')
-        self.setFixedSize(550, 700)
+        self.setFixedSize(350, 550)
         dir_name = os.path.dirname(os.path.realpath(__file__))
         self.setWindowIcon(QtGui.QIcon(dir_name + os.path.sep + 'icon.svg'))
         self.counter = 0
@@ -98,7 +97,7 @@ class CollatzApp(QtWidgets.QMainWindow):
                 self.steps_display.insertPlainText('\t| *3 + 1\n')
                 self._sequence(int(3 * number + 1))
 
-    @ QtCore.pyqtSlot()
+    @QtCore.pyqtSlot()
     def _on_click_start(self):
         """Clear the `stepsDisplay` and start the Collatz sequence."""
 
@@ -114,7 +113,7 @@ class CollatzApp(QtWidgets.QMainWindow):
             f'Terminated after {self.counter} iterations.')
         self.steps_display.moveCursor(QtGui.QTextCursor.End)
 
-    @ QtCore.pyqtSlot()
+    @QtCore.pyqtSlot()
     def _on_click_clear(self):
         """Clear the `inputBox` and `stepsDisplay`."""
 
@@ -122,7 +121,7 @@ class CollatzApp(QtWidgets.QMainWindow):
         self.steps_display.clear()
         self.input_box.setFocus()
 
-    @ QtCore.pyqtSlot()
+    @QtCore.pyqtSlot()
     def _on_click_info(self):
         """Open a dialog window to acces the relevant Wikipedia article."""
 
